@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-deploy
+  namespace: {{.Values.namespace}}
+  labels:
+    app: test-deploy
+spec:
+  replicas: {{.Values.replicaCount}}
+  selector:
+    matchLabels:
+      app: test-deploy
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 2
+      maxSurge: 2
+  template:
+    metadata:
+      labels:
+        app: test-deploy
+    spec:
+      containers:
+        - name: k8
+          image: {{.Values.image.repository}}
+          ports:
+            - containerPort: 4040
+    
